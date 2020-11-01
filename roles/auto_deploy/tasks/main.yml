@@ -1,0 +1,18 @@
+---
+- name: Clone GitHub repositiry to the server
+  git:
+      repo: 'https://github.com/dkoval-py/django_pgsql_nginx_docker.git'
+      dest: /home/ubuntu/django_pgsql_nginx_docker
+      force: yes
+
+- name: copy new settings.py with S3 parameters
+  copy: src=settings.py dest={{ dest_dir }}
+
+- name: Stop containers
+  shell: docker-compose -f django_pgsql_nginx_docker/docker-compose.yml down -v
+
+- name: Rebuild and start containers
+  shell: docker-compose -f django_pgsql_nginx_docker/docker-compose.yml up -d --build
+
+- name: Collect static in container
+  shell: docker exec django_pgsql_nginx_docker_web_1 python3.7 web_trial/manage.py collectstatic --no-input

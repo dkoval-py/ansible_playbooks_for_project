@@ -1,0 +1,50 @@
+---
+# ------CREATE SECURITY GROUP------
+- name: Create a security group
+  ec2_group:
+    name: "{{ security_group }}"
+    description: Security group for server with port 22, 80, 443
+    region: "{{ region }}"
+    rules:
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 80
+          to_port: 80
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 443
+          to_port: 443
+          cidr_ip: 0.0.0.0/0
+    rules_egress:
+        - proto: all
+          cidr_ip: 0.0.0.0/0
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_access_key: "{{ aws_access_key }}"
+
+# ------CREATE EC2 INSTANCE------
+- name: Create New AWS EC2 server
+  ec2:
+    key_name: "{{ key_name }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ image }}"
+    group: "{{ security_group }}"
+    region: "{{ region }}"
+    instance_tags:
+        Name: AnibleDeployment
+    count: "{{ count }}"
+    wait: yes
+    aws_secret_key: "{{ aws_secret_key }}"
+    aws_access_key: "{{ aws_access_key }}"
+  register: ec2  
+
+# ------DEBUG------
+- name: Print all EC2 variables
+  debug:
+    var: ec2
+
+# ------ENTER RESULTS TO FILE------
+- name: Enter EC2 cretion output to file
+  local_action: copy content={{ ec2 }} dest=/home/Ansible_playbooks/result.txt

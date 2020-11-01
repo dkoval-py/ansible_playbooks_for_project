@@ -1,0 +1,10 @@
+---
+- name: Configuring server (install java, nginx, docker, docker-compose, git). Clone web app from github and deploy it on the server
+  hosts: all
+  become: yes
+
+  roles:
+    - { role: java, when: ansible_system == "Linux" }
+    - { role: docker_git, when: ansible_system == "Linux" }
+    - { role: nginx, when: ansible_system == "Linux" }
+    - { role: deploy, when: ansible_system == "Linux" }    

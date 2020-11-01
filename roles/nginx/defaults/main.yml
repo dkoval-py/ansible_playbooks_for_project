@@ -1,0 +1,4 @@
+---
+service_name: nginx
+debian_dest: /etc/nginx/sites-available/
+redhat_dest: /etc/nginx/conf.d/

@@ -1,0 +1,3 @@
+[deploy_servers]
+
+Prod ansible_host=18.184.214.59

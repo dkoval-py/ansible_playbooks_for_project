@@ -1,0 +1,18 @@
+---
+- name: Change DNS cloudflare DNS records using API
+  hosts: localhost
+  connection: local
+
+  vars:
+    api_key: YOUR_API_KEY
+    email: YOUR_EMAIL
+    domain: YOUR_DOMAIN
+
+  tasks:
+  - name: Change A record
+    community.general.cloudflare_dns:
+        zone: "{{ domain }}"
+        type: A
+        value: 192.168.0.1
+        account_email: "{{ email }}"
+        account_api_key: "{{ api_key }}"

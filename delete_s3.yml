@@ -1,0 +1,7 @@
+---
+- name: Delete S3 bucket
+  hosts: localhost
+  connection: local
+
+  roles:
+    - { role: delete_s3, when: ansible_system == "Linux" }

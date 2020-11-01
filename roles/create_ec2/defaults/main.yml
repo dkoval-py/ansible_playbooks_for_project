@@ -1,0 +1,10 @@
+---
+
+key_name: --YOUR_PRIVATE_KEY_NAME--                             # SSL key name
+instance_type: t2.micro                                         # Instance type
+image: ami-092391a11f8aa4b7b                                    # AMI for Ubuntu18.04 in frenkfurt
+region: eu-central-1                                            # Regions
+count: 1                                                        # EC2 count 
+security_group: Ansible_Security_Group                          # Security group for instance
+aws_access_key: --YOUR_ACCESS_KEY--                             # Access IAM key
+aws_secret_key: --YOUR_SECRET_KEY--                             # Private IAM key

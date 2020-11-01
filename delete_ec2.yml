@@ -1,0 +1,8 @@
+---
+- name: Delete EC2 instance
+  hosts: localhost
+  connection: local
+
+  roles:
+    - { role: delete_ec2, when: ansible_system == "Linux" }
+

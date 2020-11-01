@@ -1,0 +1,7 @@
+---
+- name: Copy new settings.py and rebuild containers
+  hosts: all
+  become: yes
+
+  roles:
+    - { role: use_s3_for_statics, when: ansible_system == "Linux" }

@@ -1,0 +1,7 @@
+---
+- name: Auto deploy web app from github webhook
+  hosts: all
+  become: yes
+
+  roles:
+    - { role: auto_deploy, when: ansible_system == "Linux" }

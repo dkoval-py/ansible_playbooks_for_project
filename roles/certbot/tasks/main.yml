@@ -1,0 +1,29 @@
+---
+# ------INSTALL CERTBOT DEBIAN------
+- name: Install certbot Debian
+  shell: snap install --classic certbot
+  when: ansible_os_family == "Debian"
+
+# ------INSTALL CERTBOT REDHAT------
+- name: Install certbot RedHat
+  yum: name={{ item }} state=latest
+  loop:
+    - "certbot"
+    - " python2-certbot-nginx"
+  when: ansible_os_family == "RedHat"
+
+# ------GENERATE CERTIFICATE---------
+- name: Generate Let's encrypt certificate
+  shell: certbot certonly --nginx -n --agree-tos -d koval-exam.tk -m root@koval-exam.tk
+
+# ----COPY NEW NGINX CONFIG DEBIAN----
+- name: Copy new nginx config Debian
+  copy: src=koval-exam.tk.conf dest={{ dest_file_debian }}
+  notify: Restart Nginx
+  when: ansible_os_family == "Debian"
+
+# ----COPY NEW NGINX CONFIG REDHAT----
+- name: Copy new nginx config RedHat
+  copy: src={{ src_file }} dest={{ dest_file_redhat }}
+  notify: Restart Nginx
+  when: ansible_os_family == "RedHat"

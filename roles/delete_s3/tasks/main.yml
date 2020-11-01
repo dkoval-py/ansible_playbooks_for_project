@@ -1,0 +1,15 @@
+---
+# ------DELETE S3------
+- name: delete S3 bucket
+  amazon.aws.aws_s3:
+    bucket: koval.crm.django
+    mode: delete
+    region: "{{ region }}"
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+  register: s3
+
+# ------DEBUG------
+- name: Debug
+  debug:
+    var: s3

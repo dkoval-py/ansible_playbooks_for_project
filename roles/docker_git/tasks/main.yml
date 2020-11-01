@@ -1,0 +1,55 @@
+---
+- block: #-------INSTALL DOCKER/GIT DEBIAN-------
+    - name: Download Dependencies
+      apt: update_cache=yes name={{ item }} state=latest
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - python-docker
+
+    - name: Add Dockers GPG Key
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+    - name: Install the Docker Repository
+      shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+    
+    - name: Install Latest Version of Docker
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Add user to docker group
+      shell: usermod -aG docker $USER
+
+    - name: Install GIT Debian
+      apt: update_cache=yes name=git state=latest
+  when: ansible_os_family == "Debian"
+
+- block: #-------INSTALL DOCKER/GIT REDHAT-------
+    - name: Download Repo
+      yum: update_cache=yes name=yum-utils state=latest
+
+    - name: Add repo
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install Docker
+      yum: update_cache=yes name={{ item }} state=latest
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name: Start and enable Docker
+      service: name=docker state=started enabled=yes
+
+    - name: Install GIT RedHat
+      yum: update_cache=yes name=git state=latest
+  when: ansible_os_family == "RedHat"
+
+#-------INSTALL DOCKER-COMPOSE-------
+- name: Download docker-compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+- name: Add exec permissions
+  shell: chmod +x /usr/local/bin/docker-compose
+

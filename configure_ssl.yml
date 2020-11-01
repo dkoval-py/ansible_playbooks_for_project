@@ -1,0 +1,7 @@
+---
+- name: Install certbot, issue free ssl for site, change nginx conf on the server.
+  hosts: all
+  become: yes
+
+  roles:
+    - { role: certbot, when: ansible_system == "Linux" }

@@ -1,0 +1,10 @@
+---
+- block: #-------INSTALL JAVA DEBIAN-------
+    - name: Install Java Debian
+      apt: update_cache=yes name={{ debian_name }} state=latest
+  when: ansible_os_family == "Debian"
+
+- block: #-------INSTALL JAVA REDHAT-------
+    - name: Install Java RedHat
+      yum: update_cache=yes name={{ redhat_name }} state=latest
+  when: ansible_os_family == "RedHat"

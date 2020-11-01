@@ -1,0 +1,6 @@
+---
+
+key_name: --YOU_PRIVATE_KEY_NAME--                              # SSL key name
+region: eu-central-1                                            # Regions
+aws_access_key: --YOUR_AWS_ACCESS_KEY--                         # Access IAM key
+aws_secret_key: --YOUR_AWS_PRIVATE_KEY--                        # Private IAM key

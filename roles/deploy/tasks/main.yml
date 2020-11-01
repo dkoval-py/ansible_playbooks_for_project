@@ -1,0 +1,11 @@
+---
+# ------CLONE REPOSITOTY FROM GITHUB------
+- name: Clone repo
+  git:
+    repo: 'https://github.com/dkoval-py/django_pgsql_nginx_docker.git'
+    dest: /home/ubuntu/django_pgsql_nginx_docker
+    force: yes
+
+# ------BUILD CONTAINERS------
+- name: Build conteiners
+  shell: docker-compose -f django_pgsql_nginx_docker/docker-compose.yml up -d --build

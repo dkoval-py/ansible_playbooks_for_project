@@ -1,0 +1,8 @@
+---
+- name: Create S3 bucket in frankfurt
+  hosts: localhost
+  connection: local
+  become: yes
+
+  roles:
+    - { role: create_s3, when: ansible_system == "Linux" }

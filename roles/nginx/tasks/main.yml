@@ -1,0 +1,33 @@
+---
+- block: #------INSTALL NGINX DEBIAL-------
+    - name: Install Nginx Debian
+      apt: update_cache=yes name={{ service_name }} state=latest
+  when: ansible_os_family == "Debian"
+
+- block: #------INSTALL NGINX REDHAT-------
+    - name: Install EPEL repository
+      yum: update_cache=yes name=epel-release state=latest
+
+    - name: Install Nginx
+      yum: update_cache=yes name={{ service_name }} state=latest
+  when: ansible_os_family == "RedHat"
+
+#-------START AND ENABLE NGINX-------
+- name: Start and enable Nginx
+  service: name={{ service_name }} state=started enabled=yes
+
+- block: #-------COPY NGINX CONFIG FILE DEBIAN--------
+    - name: Copy Nginx config Debian
+      copy: src=koval-exam.tk.conf dest={{ debian_dest }}
+      notify: Restart Nginx
+
+    - name: Create symbol link to nginx conf
+      shell: ln -s /etc/nginx/sites-available/koval-exam.tk.conf /etc/nginx/sites-enabled/
+      notify: Restart Nginx
+  when: ansible_os_family == "Debian"
+
+- block: #-------COPY NGINX CONFIG FILE REDHAT--------
+    - name: Copy Nginx config Redhat
+      copy: src=koval-exam.tk.conf dest={{ redhat_dest }}
+      notify: Restart Nginx
+  when: ansible_os_family == "RedHat"

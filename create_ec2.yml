@@ -1,0 +1,8 @@
+---
+- name: Create EC2 instance in frankfurt
+  hosts: localhost
+  connection: local
+  become: yes
+
+  roles:
+    - { role: create_ec2, when: ansible_system == "Linux" }

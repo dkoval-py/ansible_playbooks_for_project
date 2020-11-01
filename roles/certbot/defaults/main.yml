@@ -1,0 +1,4 @@
+---
+# Destination directory on the Debian and RedHat server
+dest_file_debian: /etc/nginx/sites-available/
+dest_file_redhat: /etc/nginx/conf.d/
